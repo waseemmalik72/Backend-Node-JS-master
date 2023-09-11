@@ -1,0 +1,17 @@
+{
+  "name": "newcrudoperationexpress",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node express.mjs",
+    "dev": "nodemon express.mjs"
+  },
+  "author": "WaseemMalik",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "nanoid": "^4.0.2"
+  }
+}

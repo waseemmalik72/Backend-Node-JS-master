@@ -1,0 +1,31 @@
+.weather-card-box {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+    padding-left: 20px;
+}
+
+.weather-card-box>.country-name {
+    display: flex;
+    flex-direction: so;
+    flex-direction: column;
+    row-gap: 50px;
+    align-items: center;
+}
+
+.weather-card-box>.country-name>.country {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #dde0e5;
+}
+
+.weather-card-box>.country-name>.temp {
+    font-size: 3rem;
+    font-weight: 900;
+    color: #dde0e5;
+}
+
+.weather-card-box>.weather-icon {
+    font-size: 10rem;
+    color: #feaf26;
+}

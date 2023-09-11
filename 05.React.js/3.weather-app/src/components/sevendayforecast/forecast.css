@@ -1,0 +1,44 @@
+.forecast {
+    width: 100%;
+}
+
+.forecast>.forecast-heading {
+    color: #79808a;
+}
+
+.forecast>.seven-day-forecast {
+    margin: 34px 0;
+}
+
+.forecast>.seven-day-forecast>.days {
+    display: flex;
+    justify-content: space-between;
+}
+
+.forecast>.seven-day-forecast>.days>.day>.days-list {
+    color: #6a717d;
+    font-weight: 700;
+}
+
+.forecast>.seven-day-forecast>.days>.description {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: center;
+}
+
+.forecast>.seven-day-forecast>.days>.description>.weather-clr {
+    color: #b0b7c1;
+    margin-left: 12px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.description>.yellow {
+    color: #fec639;
+    font-size: 28px;
+}
+
+.days>.temp>.temp-degree {
+    color: #bac0ca;
+}
