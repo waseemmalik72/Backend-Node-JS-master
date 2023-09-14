@@ -167,7 +167,9 @@ const Home = () => {
               <div className="air-condition-box">
                 <div className="air-condition-header">
                   <h4 className="air-heading">Air Conditions</h4>
-                  <button className="see-more-btn">See More</button>
+                  <button className="see-more-btn" j>
+                    See More
+                  </button>
                 </div>
                 <div className="air-condition-body">
                   <div className="part-one">

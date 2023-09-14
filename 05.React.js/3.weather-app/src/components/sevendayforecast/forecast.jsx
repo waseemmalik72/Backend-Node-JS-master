@@ -11,7 +11,7 @@ const Forecast = ({ sun, data }) => {
           </div>
           <div className="description">
             <p className="weather-clr">
-              {data ? data[0].weather?.description : "Overcast Cloud"}
+              {data ? data[0].weather?.description : "overcast Cloud"}
             </p>
             {sun}
           </div>
@@ -28,7 +28,7 @@ const Forecast = ({ sun, data }) => {
           </div>
           <div className="description">
             <p className="weather-clr">
-              {data ? data[1].weather?.description : "Overcast Cloud"}
+              {data ? data[1].weather?.description : "overcast Cloud"}
             </p>
             {sun}
           </div>
@@ -45,7 +45,7 @@ const Forecast = ({ sun, data }) => {
           </div>
           <div className="description">
             <p className="weather-clr">
-              {data ? data[2].weather?.description : "Overcast Cloud"}
+              {data ? data[2].weather?.description : "overcast Cloud"}
             </p>
             {sun}
           </div>
@@ -62,7 +62,7 @@ const Forecast = ({ sun, data }) => {
           </div>
           <div className="description">
             <p className="weather-clr">
-              {data ? data[3].weather?.description : "Overcast Cloud"}
+              {data ? data[3].weather?.description : "overcast Cloud"}
             </p>
             {sun}
           </div>
@@ -79,7 +79,7 @@ const Forecast = ({ sun, data }) => {
           </div>
           <div className="description">
             <p className="weather-clr">
-              {data ? data[4].weather?.description : "Overcast Cloud"}
+              {data ? data[4].weather?.description : "overcast Cloud"}
             </p>
             {sun}
           </div>
@@ -96,7 +96,7 @@ const Forecast = ({ sun, data }) => {
           </div>
           <div className="description">
             <p className="weather-clr">
-              {data ? data[5].weather?.description : "Overcast Cloud"}
+              {data ? data[5].weather?.description : "overcast Cloud"}
             </p>
             {sun}
           </div>
@@ -113,7 +113,7 @@ const Forecast = ({ sun, data }) => {
           </div>
           <div className="description">
             <p className="weather-clr">
-              {data ? data[6].weather?.description : "Overcast Cloud"}
+              {data ? data[6].weather?.description : "overcast Cloud"}
             </p>
             {sun}
           </div>

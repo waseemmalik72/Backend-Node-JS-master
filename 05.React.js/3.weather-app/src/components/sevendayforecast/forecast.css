@@ -7,7 +7,7 @@
 }
 
 .forecast>.seven-day-forecast {
-    margin: 34px 0;
+    margin: 24px 0;
 }
 
 .forecast>.seven-day-forecast>.days {
@@ -23,7 +23,6 @@
 .forecast>.seven-day-forecast>.days>.description {
     display: flex;
     flex-direction: row-reverse;
-    align-items: center;
     justify-content: center;
 }
 
@@ -32,6 +31,8 @@
     margin-left: 12px;
     font-size: 18px;
     font-weight: 700;
+    width: 138px;
+    height: 50px;
 }
 
 .description>.yellow {
