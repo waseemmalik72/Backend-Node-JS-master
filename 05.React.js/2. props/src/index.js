@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
 import ReactDOM from "react-dom";
 import profileImg from "./profile.jpg";
 import shaji from "./shaji.jpg";
 import imti from "./imti.jpg";
-import { HandThumbsUp, ChatLeftText, ShareFill } from "react-bootstrap-icons";
+import {
+  HandThumbsUp,
+  ChatLeftText,
+  ShareFill,
+  CodeSlash,
+} from "react-bootstrap-icons";
 import "./App.css";
 
 const Post = ({ img, title, text, postImg, date }) => {
@@ -126,6 +132,54 @@ const Room = ({ myClass }) => {
 };
 
 ReactDOM.render(<Room />, document.querySelector("#root"));
+
+const Weather = () => {
+  const inputRef = useRef();
+  const Api_KEY = "a26dc0b7cab148668f6744215b44550c";
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(async (location) => {
+        console.log(location.coords.latitude, location.coords.longitude);
+        try {
+          let respnse = await axios.get(
+            `https://api.weatherbit.io/v2.0/current?lat=${location.coords.latitude}&lon=${location.coords.longitude}&key=${Api_KEY}&units=I`
+          );
+          console.log(respnse.data);
+        } catch (error) {
+          console.log(error);
+        }
+      });
+    } else {
+      console.log("Geolocation is not supported by this browser.");
+    }
+  }, []);
+  const submitHandler = (e) => {
+    e.preventDefault();
+    // console.log("hello world");
+  };
+  return (
+    <div className="callApi-form">
+      <form action="" onSubmit={submitHandler}>
+        <label htmlFor="callApi">Search Weather</label>
+        <input
+          type="text"
+          name=""
+          id="callApi"
+          ref={inputRef}
+          required
+          minLength={2}
+          maxLength={20}
+        />
+        <button className="form-btn" type="submit">
+          Get Data
+        </button>
+      </form>
+      <div className="card"></div>
+    </div>
+  );
+};
+
+ReactDOM.render(<Weather />, document.querySelector("#root"));
 
 // function Card({ imti, children }) {
 //   return (
