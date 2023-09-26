@@ -106,3 +106,14 @@ body,
   background-color: black;
   color: white;
 }
+
+.weather-card {
+  height: 100%;
+  width: 20%;
+  margin-top: 20px;
+  padding: 20px;
+  margin-left: 20px;
+  border-radius: 18px;
+  line-height: 38px;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+}
