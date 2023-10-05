@@ -1,0 +1,119 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Main Div Start Here */
+
+.main-div {
+  display: flex;
+  justify-content: center;
+}
+
+.main-div>.post {
+  margin: 20px 0;
+  width: 700px;
+  height: 100%;
+  background-color: #FFFFFF;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  border-radius: 10px;
+  padding: 25px 20px;
+}
+
+/* Post header start here */
+.main-div>.post>.post-header {
+  display: flex;
+  gap: 11px;
+  margin-bottom: 20px;
+}
+
+.main-div>.post>.post-header>.profile-img>.my-img {
+  border-radius: 38px;
+}
+
+.main-div>.post>.post-header>.post-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.main-div>.post>.post-header .post-name {
+  color: #292929;
+}
+
+.main-div>.post>.post-header .post-date {
+  color: #77787C;
+}
+
+/* Post body start here */
+
+
+.main-div>.post>.post-body {
+  margin-bottom: 20px;
+  text-align: justify;
+}
+
+.main-div>.post .post-text {
+  line-height: 24px;
+  color: #050505;
+}
+
+
+/* Post Img start here */
+
+.main-div>.post>.post-img {
+  margin: 15px 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* Post footer start here */
+
+
+.main-div>.post>.post-footer {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.main-div>.post>.post-footer>.button {
+  padding: 9px 15px;
+  border-radius: 6px;
+  flex-grow: 1;
+  text-align: center;
+}
+
+.main-div>.post>.post-footer>.button:hover {
+  background-color: #F2F2F2;
+  cursor: pointer;
+}
+
+html,
+body,
+#root,
+.room {
+  height: 100%;
+  margin: 0;
+}
+
+.lit {
+  background-color: white;
+  color: black;
+}
+
+.dark {
+  background-color: black;
+  color: white;
+}
+
+.weather-card {
+  height: 100%;
+  width: 20%;
+  margin-top: 20px;
+  padding: 20px;
+  margin-left: 20px;
+  border-radius: 18px;
+  line-height: 38px;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+}

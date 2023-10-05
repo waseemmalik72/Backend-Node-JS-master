@@ -1,70 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import ReactDOM from "react-dom";
-
-const Counter = () => {
-  const [isLit, setLit] = useState(6);
-
-  const addClick = async () => {
-    await setLit(isLit + 1);
-
-    console.log(isLit);
-  };
-  const subClick = () => {
-    // setLit("waseem")
-    setLit(isLit - 1);
-  };
-
-  return (
-    <div className="main-div">
-      <button className="" onClick={subClick}>
-        {" "}
-        Click Me
-      </button>
-      <p>{isLit}</p>
-      <button onClick={addClick}> Click Me</button>
-    </div>
-  );
-};
-
-ReactDOM.render(<Counter />, document.querySelector("#root"));
-
-const Room = ({ myClass }) => {
-  const [isLit, setLit] = React.useState(true);
-
-  return (
-    <div className={`room ${isLit ? "lit" : "dark"}`}>
-      the room is
-      <br />
-      <button onClick={() => setLit(!isLit)}>flip</button>
-    </div>
-  );
-};
-
-ReactDOM.render(<Room />, document.querySelector("#root"));
-
-const MyComponent = () => {
-  const [isLit, setLit] = useState("nadeem");
-
-  useEffect(() => {
-    console.log("hello world");
-  }, [isLit]);
-
-  const submitHandler = () => {
-    setLit((prev) => `${prev} waseem`);
-  };
-
-  return (
-    <div className="main-div">
-      <button className="btn" onClick={submitHandler}>
-        Click me
-      </button>
-      <h1>{isLit}</h1>
-    </div>
-  );
-};
-
-ReactDOM.render(<MyComponent />, document.querySelector("#root"));
+import "./App.css";
 
 const WeatherCard = ({ item }) => {
   return (
@@ -167,27 +104,3 @@ const Weather = () => {
 };
 
 ReactDOM.render(<Weather />, document.querySelector("#root"));
-
-// function Card({ imti, children }) {
-//   return (
-//     <div className="card">
-//       <img src={imti} alt="" />
-//       {children}
-//     </div>
-//   );
-// }
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <Card imti={imti}>
-//         <p>hello bhai kaise ho</p>
-//       </Card>
-//       <p>me app wala children props ho</p>
-//     </div>
-//   );
-// }
-
-// ReactDOM.render(
-//   <App />,
-//   document.querySelector("#root"))

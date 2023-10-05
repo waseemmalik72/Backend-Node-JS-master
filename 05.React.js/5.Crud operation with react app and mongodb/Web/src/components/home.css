@@ -1,0 +1,53 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+.weather-card {
+    height: 100%;
+    width: 20%;
+    margin-top: 20px;
+    padding: 20px;
+    margin-left: 20px;
+    border-radius: 18px;
+    line-height: 38px;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+}
+
+.my-data {
+    width: 50%;
+    padding: 10px;
+    margin: 20px;
+    height: 100%;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+}
+
+.data-title {
+    padding-bottom: 20px;
+}
+
+.alert-msg {
+    height: 50px;
+    margin: 5px;
+    color: green;
+}
+
+.delete-btn,
+.edit-btn {
+    margin-top: 20px;
+    margin-right: 19px;
+    margin-bottom: 5px;
+    padding: 10px 23px;
+    border-radius: 5px;
+    background: red;
+    color: white;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.edit-btn {
+    background-color: green;
+}
