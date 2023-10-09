@@ -3,11 +3,9 @@ import axios from "axios";
 import "./home.css";
 const baseUrl = "http://localhost:3001";
 
-const WeatherCard = ({ item, children }) => {
+const PostCard = ({ post, children }) => {
   return (
-    <div className="my-data" id={`post-${item?._id}`}>
-      <h1 className="data-title">{item?.title}</h1>
-      <p>{item?.text}</p>
+    <div className="my-data" id={`post-${post?._id}`}>
       {children}
     </div>
   );
@@ -16,7 +14,7 @@ const WeatherCard = ({ item, children }) => {
 const Weather = () => {
   const postInputRef = useRef();
   const bodyInputRef = useRef();
-  const [myWeather, setWeather] = useState([]);
+  const [mydata, setMyData] = useState([]);
   const [alert, setAlert] = useState(null);
   const [isLoading, setIsloading] = useState(false);
   const [toggleRefresh, setToggleRefresh] = useState(false);
@@ -27,7 +25,7 @@ const Weather = () => {
     let myFunction = async () => {
       try {
         let response = await axios.get(`${baseUrl}/api/v1/post`);
-        setWeather(response.data);
+        setMyData(response.data);
         console.log(response.data);
         setIsloading(false);
         setTimeout(() => {
@@ -41,9 +39,29 @@ const Weather = () => {
     myFunction();
   }, [toggleRefresh]);
 
+  // const editHandler = (post) => {
+  //   return post;
+  // };
+
   const deleteHandler = async (id) => {
     try {
       let response = await axios.delete(`${baseUrl}/api/v1/post/${id}`);
+      setAlert(response.data);
+      console.log(response.data);
+      setToggleRefresh(!toggleRefresh);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateHandler = async (id) => {
+    let title = postInputRef.current.value;
+    let text = bodyInputRef.current.value;
+    try {
+      let response = await axios.put(`${baseUrl}/api/v1/post/${id}`, {
+        title: title,
+        text: text,
+      });
       setAlert(response.data);
       console.log(response.data);
       setToggleRefresh(!toggleRefresh);
@@ -98,25 +116,79 @@ const Weather = () => {
           Get Data
         </button>
       </form>
+
       <p className="alert-msg">
         {isLoading && "loading..."}
         <br />
         {alert && alert}
       </p>
 
-      {myWeather.map((item, index) => {
+      {mydata.map((post, index) => {
         return (
-          <WeatherCard item={item} key={index}>
-            <button
-              className="delete-btn"
-              onClick={() => {
-                deleteHandler(item._id);
-              }}
-            >
-              Delete
-            </button>
-            <button className="edit-btn">Edit</button>
-          </WeatherCard>
+          <PostCard post={post} key={index}>
+            {!post.isEdit ? (
+              <div className="post-card">
+                <h1 className="data-title">{post?.title}</h1>
+                <p>{post?.text}</p>
+                <button
+                  className="delete-btn"
+                  onClick={() => {
+                    deleteHandler(post._id);
+                  }}
+                >
+                  Delete
+                </button>
+                <button
+                  id={`edit-${post._id}`}
+                  className="edit-btn"
+                  onClick={() => {
+                    post.isEdit = true;
+                    setMyData([...mydata]);
+                  }}
+                >
+                  Edit
+                </button>
+              </div>
+            ) : (
+              <form action="">
+                <div className="updatePost">
+                  <label htmlFor="update-title">Post Title</label>
+                  <input
+                    type="text"
+                    id="update-title"
+                    ref={postInputRef}
+                    required
+                    defaultValue={post.title}
+                    minLength={2}
+                    maxLength={20}
+                  />
+                  <br />
+                  <label htmlFor="update-text">Post text</label>
+                  <textarea
+                    type="text"
+                    id="update-text"
+                    ref={bodyInputRef}
+                    defaultValue={post.text}
+                    required
+                    minLength={2}
+                  ></textarea>
+                  <br />
+                </div>
+                <button
+                  className="update-btn"
+                  type="button"
+                  onClick={() => {
+                    updateHandler(post._id);
+                  }}
+                >
+                  Update
+                </button>
+                <button className="cancel-btn" type="button">
+                  Cancel
+                </button>
+              </form>
+            )}
+          </PostCard>
         );
       })}
     </div>

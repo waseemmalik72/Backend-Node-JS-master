@@ -35,7 +35,9 @@
 }
 
 .delete-btn,
-.edit-btn {
+.edit-btn,
+.update-btn,
+.cancel-btn {
     margin-top: 20px;
     margin-right: 19px;
     margin-bottom: 5px;
@@ -48,6 +50,7 @@
     cursor: pointer;
 }
 
-.edit-btn {
+.edit-btn,
+.update-btn {
     background-color: green;
 }
