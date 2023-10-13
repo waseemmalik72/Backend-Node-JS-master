@@ -121,7 +121,6 @@ router.put("/post/:postId", async (req, res, next) => {
         },
       }
     );
-    console.log(update);
     if (!update.upsertedId) {
       res.send("your Data has been successfully Update");
     } else {

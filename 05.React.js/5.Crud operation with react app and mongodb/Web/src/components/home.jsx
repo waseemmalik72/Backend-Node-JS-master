@@ -21,6 +21,8 @@ const Weather = () => {
   // const Api_KEY = "a26dc0b7cab148668f6744215b44550c";
 
   useEffect(() => {
+    postInputRef.current.value = "";
+    bodyInputRef.current.value = "";
     setIsloading(true);
     let myFunction = async () => {
       try {
@@ -39,21 +41,6 @@ const Weather = () => {
     myFunction();
   }, [toggleRefresh]);
 
-  // const editHandler = (post) => {
-  //   return post;
-  // };
-
-  const deleteHandler = async (id) => {
-    try {
-      let response = await axios.delete(`${baseUrl}/api/v1/post/${id}`);
-      setAlert(response.data);
-      console.log(response.data);
-      setToggleRefresh(!toggleRefresh);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const updateHandler = async (id) => {
     let title = postInputRef.current.value;
     let text = bodyInputRef.current.value;
@@ -62,6 +49,17 @@ const Weather = () => {
         title: title,
         text: text,
       });
+      setAlert(response.data);
+      console.log(response.data);
+      setToggleRefresh(!toggleRefresh);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteHandler = async (id) => {
+    try {
+      let response = await axios.delete(`${baseUrl}/api/v1/post/${id}`);
       setAlert(response.data);
       console.log(response.data);
       setToggleRefresh(!toggleRefresh);
@@ -144,6 +142,7 @@ const Weather = () => {
                   onClick={() => {
                     post.isEdit = true;
                     setMyData([...mydata]);
+                    console.log(post);
                   }}
                 >
                   Edit
@@ -157,8 +156,8 @@ const Weather = () => {
                     type="text"
                     id="update-title"
                     ref={postInputRef}
+                    Value={post.title}
                     required
-                    defaultValue={post.title}
                     minLength={2}
                     maxLength={20}
                   />
@@ -167,8 +166,8 @@ const Weather = () => {
                   <textarea
                     type="text"
                     id="update-text"
-                    ref={bodyInputRef}
                     defaultValue={post.text}
+                    ref={bodyInputRef}
                     required
                     minLength={2}
                   ></textarea>
@@ -183,7 +182,14 @@ const Weather = () => {
                 >
                   Update
                 </button>
-                <button className="cancel-btn" type="button">
+                <button
+                  className="cancel-btn"
+                  type="button"
+                  onClick={() => {
+                    post.isEdit = false;
+                    setMyData([...mydata]);
+                  }}
+                >
                   Cancel
                 </button>
               </form>
