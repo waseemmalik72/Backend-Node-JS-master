@@ -12,16 +12,15 @@ body {
 }
 
 .container {
-    width: 1582px;
-    height: 783px;
+    height: 100%;
 }
 
 .signup-container {
-    height: 90%;
+    height: 100%;
     width: 26%;
     margin: auto;
     position: relative;
-    top: 6%;
+    top: 2rem;
     background-color: #ffffff;
     box-shadow: 10px 10px 10px #1e18188c;
 }
@@ -146,6 +145,7 @@ label {
 
 .link .para {
     color: #000000c4;
+    padding-bottom: 2rem;
 }
 
 .para>a {
