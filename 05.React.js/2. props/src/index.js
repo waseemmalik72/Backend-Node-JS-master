@@ -18,7 +18,6 @@ const Counter = () => {
   return (
     <div className="main-div">
       <button className="" onClick={subClick}>
-        {" "}
         Click Me
       </button>
       <p>{isLit}</p>

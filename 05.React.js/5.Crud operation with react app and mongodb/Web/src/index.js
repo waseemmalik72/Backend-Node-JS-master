@@ -1,5 +1,13 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import Weather from "./components/home.jsx";
+import React, { StrictMode } from "react";
+import ReactDOM from "react-dom/client";
+import PostCard from "./components/home.jsx";
 
-ReactDOM.render(<Weather />, document.querySelector("#root"));
+// ReactDOM.render(<PostCard />, document.querySelector("#root"));
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(
+  <StrictMode>
+    <PostCard />
+  </StrictMode>
+);

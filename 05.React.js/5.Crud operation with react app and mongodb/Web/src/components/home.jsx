@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import "./home.css";
-const baseUrl = "http://localhost:3001";
+const baseUrl = "http://localhost:3000";
 
 const PostCard = ({ post, children }) => {
   return (
@@ -14,6 +14,8 @@ const PostCard = ({ post, children }) => {
 const Weather = () => {
   const postInputRef = useRef();
   const bodyInputRef = useRef();
+  const updatePostInputRef = useRef();
+  const updateBodyInputRef = useRef();
   const [mydata, setMyData] = useState([]);
   const [alert, setAlert] = useState(null);
   const [isLoading, setIsloading] = useState(false);
@@ -155,8 +157,8 @@ const Weather = () => {
                   <input
                     type="text"
                     id="update-title"
-                    ref={postInputRef}
-                    Value={post.title}
+                    ref={updatePostInputRef}
+                    defaultValue={post.title}
                     required
                     minLength={2}
                     maxLength={20}
@@ -167,7 +169,7 @@ const Weather = () => {
                     type="text"
                     id="update-text"
                     defaultValue={post.text}
-                    ref={bodyInputRef}
+                    ref={updateBodyInputRef}
                     required
                     minLength={2}
                   ></textarea>
