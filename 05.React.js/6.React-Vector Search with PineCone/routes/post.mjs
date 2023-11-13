@@ -29,6 +29,13 @@ router.post("/post", async (req, res, next) => {
     // console.log(req.body);
     // console.log(posts._id);
     // res.send("Post Created");
+
+    const embedding = await openai.embeddings.create({
+      model: "text-embedding-ada-002",
+      input: `${req.body.title}, ${req.body.text}`,
+    });
+    console.log(embedding);
+    res.send("Post Created")
   } catch (e) {
     console.log("error inserting mongodb: ", e);
     res.status(500).send("server error, please try later");
