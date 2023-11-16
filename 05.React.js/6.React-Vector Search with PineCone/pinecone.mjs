@@ -8,8 +8,8 @@ const pinecone = new Pinecone({
 
 export default pinecone;
 
-const openai = new OpenAI({
+const openAi = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY, // defaults to process.env["OPENAI_API_KEY"]
 });
 
-export { openai };
+export { openAi };

@@ -2,7 +2,7 @@ import express from "express";
 import { customAlphabet } from "nanoid";
 import { client } from "../mongodb.mjs";
 import { ObjectId } from "mongodb";
-import pineconeClient, { openai } from "../pinecone.mjs";
+import pineconeClient, { openAi } from "../pinecone.mjs";
 const router = express.Router();
 
 const nanoid = customAlphabet("1234567890abcdef", 10);
@@ -20,22 +20,24 @@ router.post("/post", async (req, res, next) => {
   }
 
   try {
-    let posts = {
-      title: req.body.title,
-      text: req.body.text,
-    };
+    // let posts = {
+    //   title: req.body.title,
+    //   text: req.body.text,
+    // };
 
     // const p = await col.insertOne(posts);
     // console.log(req.body);
     // console.log(posts._id);
     // res.send("Post Created");
 
-    const embedding = await openai.embeddings.create({
+    const embedding = await openAi.embeddings.create({
       model: "text-embedding-ada-002",
-      input: `${req.body.title}, ${req.body.text}`,
+      input: `${req.body.title} ${req.body.text}`,
     });
-    console.log(embedding);
-    res.send("Post Created")
+
+    const vector = embedding.data[0].embedding;
+    console.log(vector);
+    res.send("Post Created");
   } catch (e) {
     console.log("error inserting mongodb: ", e);
     res.status(500).send("server error, please try later");
