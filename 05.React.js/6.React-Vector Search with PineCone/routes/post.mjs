@@ -6,6 +6,7 @@ import pineconeClient, { openAi } from "../pinecone.mjs";
 const router = express.Router();
 
 const nanoid = customAlphabet("1234567890abcdef", 10);
+const pcIndex = pineconeClient.Index(process.env.PINECONE_INDEX_NAME);
 const db = client.db("Cruddb");
 const col = db.collection("Manager");
 
@@ -36,22 +37,52 @@ router.post("/post", async (req, res, next) => {
     });
 
     const vector = embedding.data[0].embedding;
+    await pcIndex.upsert([
+      {
+        id: nanoid(),
+        values: vector,
+        metadata: {
+          title: req.body.title,
+          text: req.body.text,
+          created_at: new Date().toISOString(),
+        },
+      },
+    ]);
     console.log(vector);
     res.send("Post Created");
   } catch (e) {
-    console.log("error inserting mongodb: ", e);
+    console.log("error inserting Pinecone: ", e);
     res.status(500).send("server error, please try later");
   }
 });
 
 router.get("/post", async (req, res, next) => {
-  let cursor = col.find({}).sort({ _id: -1 }).limit(100);
+  // let cursor = col.find({}).sort({ _id: -1 }).limit(100);
 
   try {
-    let result = await cursor.toArray();
-    res.send(result);
+    // let result = await cursor.toArray();
+    // res.send(result);
+    const embedding = await openAi.embeddings.create({
+      model: "text-embedding-ada-002",
+      input: "",
+    });
+
+    const vector = embedding.data[0].embedding;
+    // console.log(vector);
+
+    const updateResponse = await pcIndex.query({
+      vector: vector,
+      topK: 10000,
+      includeMetadata: true,
+    });
+    const sendResponse = updateResponse.matches.map((item) => {
+      // return { id: item.id, ...item.metadata };
+      return item.metadata;
+    });
+    // console.log(sendResponse);
+    res.send(sendResponse);
   } catch (e) {
-    console.log("error getting data mongodb: ", e);
+    console.log("error getting data Pinecone: ", e);
     res.status(500).send("server error, please try later");
   }
 });
@@ -79,7 +110,7 @@ router.get(`/post/:postId`, async (req, res, next) => {
 });
 
 router.delete("/post/:postId", async (req, res, next) => {
-  if (!ObjectId.isValid(req.params.postId)) {
+  if (!req.params.postId) {
     res.status(403).send(`post id must be a valid id`);
     return;
   }
@@ -88,15 +119,23 @@ router.delete("/post/:postId", async (req, res, next) => {
   // let objectId = new ObjectId(myId);
 
   try {
-    let deletePost = await col.findOneAndDelete({
-      _id: new ObjectId(req.params.postId),
-    });
-    if (deletePost.value) {
-      console.log("deleteResponse: ", deletePost);
-      res.send("your data has been successfully deleted");
-    } else {
-      res.send("post not found with id " + req.params.postId);
-    }
+    // let deletePost = await col.findOneAndDelete({
+    //   _id: new ObjectId(req.params.postId),
+    // });
+    // if (deletePost.value) {
+    //   console.log("deleteResponse: ", deletePost);
+    //   res.send("your data has been successfully deleted");
+    // } else {
+    //   res.send("post not found with id " + req.params.postId);
+    // }
+
+    const pcDelete = await pcIndex.deleteOne(req.params.postId);
+    console.log(pcDelete);
+    res.send("your data has been successfully deleted");
+    // console.log(pcDelete.deletedCount);
+    // if (pcDelete.deletedCount === 0) {
+    //   res.send("post not found with id " + req.params.postId);
+    // }
   } catch (error) {
     console.log(error);
     res.status(500).send("an error occurred while deleting post");

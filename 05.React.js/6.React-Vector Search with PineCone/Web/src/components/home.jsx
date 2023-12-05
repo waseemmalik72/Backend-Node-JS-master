@@ -5,7 +5,7 @@ const baseUrl = "http://localhost:3000";
 
 const PostCard = ({ post, children }) => {
   return (
-    <div className="my-data" id={`post-${post?._id}`}>
+    <div className="my-data" id={`post-${post?.id}`}>
       {children}
     </div>
   );
@@ -133,13 +133,13 @@ const Post = () => {
                 <button
                   className="delete-btn"
                   onClick={() => {
-                    deleteHandler(post._id);
+                    deleteHandler(post.id);
                   }}
                 >
                   Delete
                 </button>
                 <button
-                  id={`edit-${post._id}`}
+                  id={`edit-${post.id}`}
                   className="edit-btn"
                   onClick={() => {
                     post.isEdit = true;
@@ -179,7 +179,7 @@ const Post = () => {
                   className="update-btn"
                   type="button"
                   onClick={() => {
-                    updateHandler(post._id);
+                    updateHandler(post.id);
                   }}
                 >
                   Update
