@@ -3,12 +3,12 @@ import { customAlphabet } from "nanoid";
 import { client } from "../mongodb.mjs";
 import { ObjectId } from "mongodb";
 import pineconeClient, { openAi } from "../pinecone.mjs";
-const router = express.Router();
 
 const nanoid = customAlphabet("1234567890abcdef", 10);
 const pcIndex = pineconeClient.Index(process.env.PINECONE_INDEX_NAME);
 const db = client.db("Cruddb");
 const col = db.collection("Manager");
+const router = express.Router();
 
 router.post("/post", async (req, res, next) => {
   if (!req.body.title || !req.body.text) {
@@ -36,7 +36,8 @@ router.post("/post", async (req, res, next) => {
       input: `${req.body.title} ${req.body.text}`,
     });
 
-    const vector = embedding.data[0].embedding;
+    const vector = embedding?.data[0]?.embedding;
+
     await pcIndex.upsert([
       {
         id: nanoid(),
@@ -44,12 +45,26 @@ router.post("/post", async (req, res, next) => {
         metadata: {
           title: req.body.title,
           text: req.body.text,
-          created_at: new Date().toISOString(),
+          // created_at: new Date().toISOString(),
         },
       },
     ]);
-    console.log(vector);
-    res.send("Post Created");
+
+    const status = await pcIndex.describeIndexStats();
+    let previousRecord = status.totalRecordCount;
+    const checkingData = setInterval(async () => {
+      let status = await pcIndex.describeIndexStats();
+      let currentRecord = status.totalRecordCount;
+      console.log(previousRecord, currentRecord);
+      if (previousRecord < currentRecord) {
+        clearInterval(checkingData);
+        // return res.send("you'r data has been successfully submitted");
+      }
+      console.log("data is still being submitted");
+    }, 1000);
+    checkingData;
+    // console.log(vector);
+    // res.send("Post Created");
   } catch (e) {
     console.log("error inserting Pinecone: ", e);
     res.status(500).send("server error, please try later");
@@ -67,20 +82,25 @@ router.get("/post", async (req, res, next) => {
       input: "",
     });
 
-    const vector = embedding.data[0].embedding;
+    const vector = embedding?.data[0]?.embedding;
     // console.log(vector);
 
-    const updateResponse = await pcIndex.query({
+    const pcQuery = await pcIndex.query({
       vector: vector,
       topK: 10000,
       includeMetadata: true,
     });
-    const sendResponse = updateResponse.matches.map((item) => {
-      // return { id: item.id, ...item.metadata };
-      return item.metadata;
-    });
-    // console.log(sendResponse);
-    res.send(sendResponse);
+
+    console.log(`${pcQuery.matches.length} records found `);
+
+    console.log(pcQuery);
+    const formattedOutput = pcQuery.matches.map((eachMatch) => ({
+      text: eachMatch?.metadata?.text,
+      title: eachMatch?.metadata?.title,
+      id: eachMatch?.id,
+    }));
+
+    res.send(formattedOutput);
   } catch (e) {
     console.log("error getting data Pinecone: ", e);
     res.status(500).send("server error, please try later");
@@ -129,9 +149,20 @@ router.delete("/post/:postId", async (req, res, next) => {
     //   res.send("post not found with id " + req.params.postId);
     // }
 
-    const pcDelete = await pcIndex.deleteOne(req.params.postId);
-    console.log(pcDelete);
-    res.send("your data has been successfully deleted");
+    await pcIndex.deleteOne(req.params.postId);
+    const status = await pcIndex.describeIndexStats();
+    let previousRecord = status.totalRecordCount;
+    const checkingData = setInterval(async () => {
+      let status = await pcIndex.describeIndexStats();
+      let currentRecord = status.totalRecordCount;
+      console.log(previousRecord, currentRecord);
+      if (previousRecord > currentRecord) {
+        clearInterval(checkingData);
+        return res.send("you'r data has been successfully deleted");
+      }
+      console.log("data is still being deleted");
+    }, 1000);
+    checkingData;
     // console.log(pcDelete.deletedCount);
     // if (pcDelete.deletedCount === 0) {
     //   res.send("post not found with id " + req.params.postId);
@@ -143,10 +174,10 @@ router.delete("/post/:postId", async (req, res, next) => {
 });
 
 router.put("/post/:postId", async (req, res, next) => {
-  if (!ObjectId.isValid(req.params.postId)) {
-    res.status(403).send("your id is not valid");
-    return;
-  }
+  // if (!ObjectId.isValid(req.params.postId)) {
+  //   res.status(403).send("your id is not valid");
+  //   return;
+  // }
 
   if (!req.body.text && !req.body.title) {
     res.status(403)
@@ -162,20 +193,55 @@ router.put("/post/:postId", async (req, res, next) => {
   }
 
   try {
-    let update = await col.updateOne(
-      { _id: new ObjectId(req.params.postId) },
+    // let update = await col.updateOne(
+    //   { _id: new ObjectId(req.params.postId) },
+    //   {
+    //     $set: {
+    //       title: req.body.title,
+    //       text: req.body.text,
+    //     },
+    //   }
+    // );
+    // if (!update.upsertedId) {
+    //   res.send("your Data has been successfully Update");
+    // } else {
+    //   res.send("Your id is not correct");
+    // }
+
+    const embedding = await openAi.embeddings.create({
+      model: "text-embedding-ada-002",
+      input: `${req.body.title} ${req.body.text}`,
+    });
+
+    const vector = embedding?.data[0]?.embedding;
+
+    const pcUpdate = await pcIndex.upsert([
       {
-        $set: {
+        id: req?.params?.postId,
+        values: vector,
+        metadata: {
           title: req.body.title,
           text: req.body.text,
         },
+      },
+    ]);
+
+    const status = await pcIndex.describeIndexStats();
+    let previousRecord = status.totalRecordCount;
+    const checkingData = setInterval(async () => {
+      let status = await pcIndex.describeIndexStats();
+      console.log(status);
+      let currentRecord = status.totalRecordCount;
+      console.log(previousRecord, currentRecord);
+      if (previousRecord > currentRecord) {
+        clearInterval(checkingData);
+        return res.send("you'r data has been successfully updated");
       }
-    );
-    if (!update.upsertedId) {
-      res.send("your Data has been successfully Update");
-    } else {
-      res.send("Your id is not correct");
-    }
+      console.log("data is still being updated");
+    }, 1000);
+    checkingData;
+
+    // res.send("your Data has been successfully Update");
   } catch (error) {
     console.log(error);
     res.status(500).send("an error occurred while updating post");

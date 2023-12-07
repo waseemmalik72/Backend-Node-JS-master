@@ -18,7 +18,7 @@ const Post = () => {
   const updateBodyInputRef = useRef();
   const [mydata, setMyData] = useState([]);
   const [alert, setAlert] = useState(null);
-  const [isLoading, setIsloading] = useState(false);
+  const [isLoading, setIsloading] = useState(true);
   const [toggleRefresh, setToggleRefresh] = useState(false);
   // const Api_KEY = "a26dc0b7cab148668f6744215b44550c";
 
@@ -29,7 +29,7 @@ const Post = () => {
     let myFunction = async () => {
       try {
         let response = await axios.get(`${baseUrl}/api/v1/post`);
-        setMyData(response.data);
+        setMyData([...response.data]);
         console.log(response.data);
         setIsloading(false);
         setTimeout(() => {
@@ -46,6 +46,7 @@ const Post = () => {
   const updateHandler = async (id) => {
     let title = updatePostInputRef.current.value;
     let text = updateBodyInputRef.current.value;
+    setIsloading(true);
     try {
       let response = await axios.put(`${baseUrl}/api/v1/post/${id}`, {
         title: title,
@@ -60,6 +61,8 @@ const Post = () => {
   };
 
   const deleteHandler = async (id) => {
+    setIsloading(true);
+
     try {
       let response = await axios.delete(`${baseUrl}/api/v1/post/${id}`);
       setAlert(response.data);
