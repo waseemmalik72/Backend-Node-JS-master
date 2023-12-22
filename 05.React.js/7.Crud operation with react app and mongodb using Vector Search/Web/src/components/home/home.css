@@ -4,6 +4,14 @@
     box-sizing: border-box;
 }
 
+.form-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.search-form {
+    margin: 4rem 2rem 0 0;
+}
 
 .weather-card {
     height: 100%;

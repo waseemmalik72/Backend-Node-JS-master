@@ -16,6 +16,7 @@ const Post = () => {
   const bodyInputRef = useRef();
   const updatePostInputRef = useRef();
   const updateBodyInputRef = useRef();
+  const searchInputRef = useRef();
   const [mydata, setMyData] = useState([]);
   const [alert, setAlert] = useState(null);
   const [isLoading, setIsloading] = useState(true);
@@ -73,6 +74,23 @@ const Post = () => {
     }
   };
 
+  const searchHandler = async (e) => {
+    e.preventDefault();
+    let query = searchInputRef.current.value;
+    setIsloading(true);
+    try {
+      let response = await axios.get(
+        `${baseUrl}/api/v1/post/search/?q=${query}`
+      );
+      setMyData([...response.data]);
+      console.log(response.data);
+      setIsloading(false);
+      e.target.reset();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
     setIsloading(true);
@@ -86,6 +104,7 @@ const Post = () => {
       console.log(response.data);
       setIsloading(false);
       setToggleRefresh(!toggleRefresh);
+      e.target.reset();
     } catch (error) {
       console.log(error);
       setIsloading(false);
@@ -95,31 +114,40 @@ const Post = () => {
 
   return (
     <div className="post-title-form">
-      <form action="" onSubmit={submitHandler}>
-        <label htmlFor="post-title">Post Title</label>
-        <input
-          type="text"
-          id="post-title"
-          ref={postInputRef}
-          required
-          minLength={2}
-          maxLength={20}
-        />
-        <br />
-        <label htmlFor="text-body">Post text</label>
-        <textarea
-          type="text"
-          id="text-body"
-          ref={bodyInputRef}
-          required
-          minLength={2}
-        ></textarea>
-        <br />
-        <button className="form-btn" type="submit">
-          Get Data
-        </button>
-      </form>
-
+      <div className="form-header">
+        <form action="" onSubmit={submitHandler}>
+          <label htmlFor="post-title">Post Title</label>
+          <input
+            type="text"
+            id="post-title"
+            ref={postInputRef}
+            required
+            minLength={2}
+            maxLength={20}
+          />
+          <br />
+          <label htmlFor="text-body">Post text</label>
+          <textarea
+            type="text"
+            id="text-body"
+            ref={bodyInputRef}
+            required
+            minLength={2}
+          ></textarea>
+          <br />
+          <button className="form-btn" type="submit">
+            Get Data
+          </button>
+        </form>
+        <div className="search-input">
+          <form onSubmit={searchHandler}>
+            <input type="search" placeholder="Search" ref={searchInputRef} />
+            <button type="submit" hidden>
+              Search
+            </button>
+          </form>
+        </div>
+      </div>
       <p className="alert-msg">
         {isLoading && "loading..."}
         <br />

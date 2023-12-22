@@ -6,12 +6,12 @@
 
 // export { addFunc }
 
-let check = setInterval(() => {
-  console.log("hello world");
-}, 1000);
+// let check = setInterval(() => {
+//   console.log("hello world");
+// }, 1000);
 
-let newCheck = setTimeout(() => {
-  clearInterval(check);
-}, 5000);
+// let newCheck = setTimeout(() => {
+//   clearInterval(check);
+// }, 5000);
 
 // clearTimeout(newCheck);

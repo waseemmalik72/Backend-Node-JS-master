@@ -50,21 +50,8 @@ router.post("/post", async (req, res, next) => {
       },
     ]);
 
-    const status = await pcIndex.describeIndexStats();
-    let previousRecord = status.totalRecordCount;
-    const checkingData = setInterval(async () => {
-      let status = await pcIndex.describeIndexStats();
-      let currentRecord = status.totalRecordCount;
-      console.log(previousRecord, currentRecord);
-      if (previousRecord < currentRecord) {
-        clearInterval(checkingData);
-        // return res.send("you'r data has been successfully submitted");
-      }
-      console.log("data is still being submitted");
-    }, 1000);
-    checkingData;
+    res.send("you'r data has been successfully submitted");
     // console.log(vector);
-    // res.send("Post Created");
   } catch (e) {
     console.log("error inserting Pinecone: ", e);
     res.status(500).send("server error, please try later");
@@ -83,7 +70,6 @@ router.get("/post", async (req, res, next) => {
     });
 
     const vector = embedding?.data[0]?.embedding;
-    // console.log(vector);
 
     const pcQuery = await pcIndex.query({
       vector: vector,
@@ -91,9 +77,9 @@ router.get("/post", async (req, res, next) => {
       includeMetadata: true,
     });
 
-    console.log(`${pcQuery.matches.length} records found `);
+    // console.log(`${pcQuery.matches.length} records found `);
 
-    console.log(pcQuery);
+    // console.log(pcQuery);
     const formattedOutput = pcQuery.matches.map((eachMatch) => ({
       text: eachMatch?.metadata?.text,
       title: eachMatch?.metadata?.title,
@@ -107,9 +93,14 @@ router.get("/post", async (req, res, next) => {
   }
 });
 
-router.get(`/post/:postId`, async (req, res, next) => {
-  if (!ObjectId.isValid(req.params.postId)) {
-    res.status(403).send(`Invalid post id`);
+router.get(`/post/search`, async (req, res, next) => {
+  // if (!ObjectId.isValid(req.params.postId)) {
+  //   res.status(403).send(`Invalid post id`);
+  //   return;
+  // }
+  console.log(req.query.q);
+  if (!req.query.q) {
+    res.status(403).send(`post id must be a valid id`);
     return;
   }
 
@@ -121,9 +112,34 @@ router.get(`/post/:postId`, async (req, res, next) => {
   //     ]
   // });
 
+  //   try {
+  //     let cursor = await col.findOne({ _id: new ObjectId(req.params.postId) });
+  //     res.send(cursor);
+  //   } catch (error) {
+  //     res.status(500).send("server error, please try later");
+  //   }
+
   try {
-    let cursor = await col.findOne({ _id: new ObjectId(req.params.postId) });
-    res.send(cursor);
+    const embedding = await openAi.embeddings.create({
+      model: "text-embedding-ada-002",
+      input: req.query.q,
+    });
+
+    const vector = embedding?.data[0]?.embedding;
+
+    const pcQuery = await pcIndex.query({
+      vector: vector,
+      topK: 10000,
+      includeMetadata: true,
+    });
+
+    const formattedOutput = pcQuery.matches.map((eachMatch) => ({
+      text: eachMatch?.metadata?.text,
+      title: eachMatch?.metadata?.title,
+      id: eachMatch?.id,
+    }));
+
+    res.send(formattedOutput);
   } catch (error) {
     res.status(500).send("server error, please try later");
   }
@@ -149,24 +165,15 @@ router.delete("/post/:postId", async (req, res, next) => {
     //   res.send("post not found with id " + req.params.postId);
     // }
 
-    await pcIndex.deleteOne(req.params.postId);
-    const status = await pcIndex.describeIndexStats();
-    let previousRecord = status.totalRecordCount;
-    const checkingData = setInterval(async () => {
-      let status = await pcIndex.describeIndexStats();
-      let currentRecord = status.totalRecordCount;
-      console.log(previousRecord, currentRecord);
-      if (previousRecord > currentRecord) {
-        clearInterval(checkingData);
-        return res.send("you'r data has been successfully deleted");
-      }
-      console.log("data is still being deleted");
-    }, 1000);
-    checkingData;
     // console.log(pcDelete.deletedCount);
     // if (pcDelete.deletedCount === 0) {
     //   res.send("post not found with id " + req.params.postId);
     // }
+
+    await pcIndex.deleteOne(req.params.postId);
+    const status = await pcIndex.describeIndexStats();
+    console.log(status.totalRecordCount);
+    res.send("you'r data has been successfully deleted");
   } catch (error) {
     console.log(error);
     res.status(500).send("an error occurred while deleting post");
@@ -226,22 +233,7 @@ router.put("/post/:postId", async (req, res, next) => {
       },
     ]);
 
-    const status = await pcIndex.describeIndexStats();
-    let previousRecord = status.totalRecordCount;
-    const checkingData = setInterval(async () => {
-      let status = await pcIndex.describeIndexStats();
-      console.log(status);
-      let currentRecord = status.totalRecordCount;
-      console.log(previousRecord, currentRecord);
-      if (previousRecord > currentRecord) {
-        clearInterval(checkingData);
-        return res.send("you'r data has been successfully updated");
-      }
-      console.log("data is still being updated");
-    }, 1000);
-    checkingData;
-
-    // res.send("your Data has been successfully Update");
+    res.send("you'r data has been successfully updated");
   } catch (error) {
     console.log(error);
     res.status(500).send("an error occurred while updating post");
