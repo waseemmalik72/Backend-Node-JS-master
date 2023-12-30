@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import "./home.css";
+import "./post.css";
 const baseUrl = "http://localhost:5000";
 
 const PostCard = ({ post, children }) => {
