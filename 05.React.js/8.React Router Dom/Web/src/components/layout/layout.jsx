@@ -26,6 +26,16 @@ const Layout = ({ children }) => {
               Chat
             </Link>
           </li>
+          <li className="nav-list">
+            <Link className="nav-link" to="/signup">
+              Signup
+            </Link>
+          </li>
+          <li className="nav-list">
+            <Link className="nav-link" to="/signin">
+              Signin
+            </Link>
+          </li>
         </ul>
       </nav>
       <main className="main">{children}</main>

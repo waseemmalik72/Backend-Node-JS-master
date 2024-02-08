@@ -1,0 +1,7 @@
+.signup-form .success {
+    color: green;
+}
+
+.signup-form .error {
+    color: red;
+}

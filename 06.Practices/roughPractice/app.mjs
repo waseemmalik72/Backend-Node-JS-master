@@ -1,5 +1,7 @@
 // console.log("hello world");
 
+// import { func } from "prop-types"
+
 // let arr = new Array()
 // arr.push("name");
 // arr.push("waseem")
@@ -61,17 +63,35 @@
 
 // addFunc()
 
-const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+// const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-for (let i = 0; i < 7; i++) {
-  const date = new Date();
-  // console.log(date.getDate())
-  date.setDate(date.getDate() + i);
-  console.log(date);
-  date.setDate(date.getDate() + i); // Current date + i days
+// for (let i = 0; i < 7; i++) {
+//   const date = new Date();
+//   // console.log(date.getDate())
+//   date.setDate(date.getDate() + i);
+//   console.log(date);
+//   date.setDate(date.getDate() + i); // Current date + i days
 
-  const dayIndex = date.getDay(); // Get the day index (0 for Sunday, 1 for Monday, etc.)
-  const dayName = daysOfWeek[dayIndex]; // Get the day name from the array
+//   const dayIndex = date.getDay(); // Get the day index (0 for Sunday, 1 for Monday, etc.)
+//   const dayName = daysOfWeek[dayIndex]; // Get the day name from the array
 
-  console.log(`Day ${i + 1}: ${dayName}`);
-}
+//   console.log(`Day ${i + 1}: ${dayName}`);
+// }
+
+// let check = "nadeem";
+
+// let obj = {
+//   name: "waseem",
+//   age: 25,
+//   myFunc2: function () {
+//     let myFunc3 = () => {
+//       let myFunc4 = () => {
+//         console.log(this);
+//       };
+//       myFunc4();
+//     };
+//     myFunc3();
+//   },
+// };
+
+// obj.myFunc2();

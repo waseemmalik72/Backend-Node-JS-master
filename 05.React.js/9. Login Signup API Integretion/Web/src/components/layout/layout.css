@@ -1,0 +1,17 @@
+.navbar {
+    height: 120px;
+    background-color: black;
+    display: flex;
+    align-items: center;
+}
+
+.navbar .nav-list {
+    display: flex;
+    gap: 15px;
+    list-style: none;
+}
+
+.navbar .nav-list .nav-link {
+    text-decoration: none;
+    color: white;
+}
