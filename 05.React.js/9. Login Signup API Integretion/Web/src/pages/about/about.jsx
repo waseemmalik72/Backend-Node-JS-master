@@ -1,5 +1,9 @@
+import React, { useContext } from "react";
+import { GlobalContext } from "../../context/context";
+
 const About = () => {
-  return <h1>About MySelf</h1>;
+  const { state } = useContext(GlobalContext);
+  return <p>{JSON.stringify(state)}</p>;
 };
 
 export default About;

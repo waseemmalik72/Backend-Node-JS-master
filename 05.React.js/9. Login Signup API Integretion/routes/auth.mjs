@@ -15,8 +15,8 @@ router.post("/signup", async (req, res) => {
   ) {
     res.status(403)
       .send(`Sorry Required Parameter is Missing Type something like this {
-          firstName: "Waseem",
-          lastName: "Malik",
+          firstName: "John",
+          lastName: "Doe",
           email: "someone@email.com",
           password: "********"
       }`);
@@ -27,18 +27,18 @@ router.post("/signup", async (req, res) => {
 
   try {
     const result = await col.findOne({ email: email });
-
+    console.log(result);
     if (!result) {
       const passwordHash = await stringToHash(req.body.password);
 
       const inputUserData = await col.insertOne({
+        isAdmin: false,
         email: email,
         password: passwordHash,
         firstName: req.body?.firstName,
         lastName: req.body?.lastName,
       });
 
-      console.log(inputUserData);
       res.send({ message: "you'r successfully Signup" });
       return;
     } else {
@@ -66,22 +66,28 @@ router.post("/login", async (req, res) => {
 
   try {
     const result = await col.findOne({ email: email });
-    console.log(result);
 
-    const matchPassword = await verifyHash(req.body.password, result.password);
-    console.log(result && matchPassword);
+    if (!result) {
+      res.status(403).send({
+        message: "Email doesn't exist",
+      });
+      return;
+    }
 
-    if (result && matchPassword) {
+    const matchPassword = await verifyHash(req.body.password, result?.password);
+
+    if (matchPassword) {
       const token = jwt.sign(
         {
-          isAdmin: false,
+          isAdmin: result.isAdmin,
           email: req.body.email,
           firstName: result.firstName,
           lastName: result.lastName,
+          _id: result._id,
         },
         process.env.SECRET,
         {
-          expiresIn: 300,
+          expiresIn: 1500,
         }
       );
       res.cookie("token", token, {
@@ -89,7 +95,15 @@ router.post("/login", async (req, res) => {
         secure: true,
         // expires: new Date(Date.now() + 15000)
       });
-      res.send({ message: "login successfully" });
+      res.send({
+        message: "login successfully",
+        user: {
+          isAdmin: result.isAdmin,
+          email: req.body.email,
+          firstName: result.firstName,
+          lastName: result.lastName,
+        },
+      });
     } else {
       res.status(403).send({
         message: "Email and password Incorrect",
@@ -101,4 +115,9 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.post("/logout", (req, res) => {
+  console.log("hello world");
+  res.clearCookie("token");
+  res.send({ message: "logout successfully" });
+});
 export default router;

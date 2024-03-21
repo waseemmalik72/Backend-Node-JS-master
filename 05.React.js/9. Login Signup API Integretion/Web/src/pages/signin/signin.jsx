@@ -2,7 +2,7 @@ import React, { useRef, useState, useContext } from "react";
 import axios from "axios";
 import "./signin.css";
 import { GlobalContext } from "../../context/context";
-const baseUrl = "http://localhost:5000";
+import { API_URL } from "../../core";
 
 const Signin = () => {
   const { dispatch } = useContext(GlobalContext);
@@ -17,7 +17,7 @@ const Signin = () => {
 
     try {
       let response = await axios.post(
-        `${baseUrl}/api/v1/login`,
+        `${API_URL}/api/v1/login`,
         {
           email: emailInputRef.current.value,
           password: paswordInputRef.current.value,
@@ -26,12 +26,13 @@ const Signin = () => {
           withCredentials: true,
         }
       );
-      setErrorSuccessResponse(response.data.message);
+      setErrorSuccessResponse(response.data);
       setErorrSuccessClass("success");
+      e.target.reset();
       dispatch({
         type: "USER_LOGIN",
+        payload: response.data.user,
       });
-      e.target.reset();
     } catch (error) {
       setErrorSuccessResponse(error.response.data.message);
       setErorrSuccessClass("error");

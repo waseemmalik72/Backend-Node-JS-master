@@ -3,8 +3,9 @@ import path from "path";
 import "dotenv/config";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-const __dirname = path.resolve();
+import jwt from "jsonwebtoken";
 
+const __dirname = path.resolve();
 const app = express();
 const port = 5000;
 app.use(cookieParser());
@@ -21,27 +22,44 @@ import postRouter from "./routes/post.mjs";
 
 app.use("/api/v1", authRouter);
 
-app.use((req, res, next) => {
-  // Barrier
-  // console.log(req.cookies);
+// Token Barrier
+app.use("/api/v1", (req, res, next) => {
   const token = req.cookies.token;
-  if (token) {
-    req.user = token;
-    console.log(req.user);
-    next();
+
+  if (!token) {
+    res.status(401).send("your token is invalid");
     return;
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.SECRET);
+    req.body.decoded = {
+      firstName: decoded.firstName,
+      lastName: decoded.lastName,
+      email: decoded.email,
+      isAdmin: decoded.isAdmin,
+      _id: decoded._id,
+    };
+    next();
+  } catch (err) {
+    // console.log(err);
+    res.status(401).send("your token is invalid");
   }
 });
 
 app.use("/api/v1", postRouter); //Secure API
 
-app.use(express.static(path.join(__dirname, "web/build")));
+app.use("/", express.static(path.join(__dirname, "web/build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "web/build/index.html"));
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port http://localhost:${port}`);
 });
 
-// Environment variable "PORT" ka value "3000" set kiya gaya hai.
+// Environment variable "PORT" ka value "3000" set kiya gaya hai.s
 // const port = process.env.PORT || 3000;
 
 // app.listen(port, () => {

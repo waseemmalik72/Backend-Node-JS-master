@@ -15,3 +15,16 @@
     text-decoration: none;
     color: white;
 }
+
+.spinner-div {
+    position: relative;
+    top: 0;
+}
+
+.spinner-div .loading {
+    position: absolute;
+    top: 66%;
+    left: 44%;
+    right: 50%;
+    font-size: 3rem;
+}

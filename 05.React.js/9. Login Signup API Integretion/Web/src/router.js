@@ -8,14 +8,14 @@ import Chat from "./pages/chat/chat";
 import Signup from "./pages/signup/signup";
 import Signin from "./pages/signin/signin";
 import { GlobalContext } from "./context/context";
+
 const MyRouter = () => {
   const { state } = useContext(GlobalContext);
-  console.log(state);
   return (
     <div>
       <BrowserRouter>
         <Layout>
-          {state.isLogin ? (
+          {state?.isLogin === true ? (
             <Routes>
               <Route path="/" element={<Home />} />
               <Route index path="/" element={<Home />} />
@@ -24,7 +24,9 @@ const MyRouter = () => {
               <Route path="/chat" element={<Chat />} />
               <Route path="*" element={<Navigate to="/" replace={true} />} />
             </Routes>
-          ) : (
+          ) : null}
+
+          {state?.isLogin === false ? (
             <Routes>
               <Route path="/signin" element={<Signin />} />
               <Route path="/signup" element={<Signup />} />
@@ -33,7 +35,7 @@ const MyRouter = () => {
                 element={<Navigate to="/signin" replace={true} />}
               />
             </Routes>
-          )}
+          ) : null}
         </Layout>
       </BrowserRouter>
     </div>

@@ -1,7 +1,9 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import axios from "axios";
 import "./post.css";
-const baseUrl = "http://localhost:5000";
+import { GlobalContext } from "../../context/context";
+
+import { API_URL } from "../../core";
 
 const PostCard = ({ post, children }) => {
   return (
@@ -12,6 +14,7 @@ const PostCard = ({ post, children }) => {
 };
 
 const Post = () => {
+  const { dispatch } = useContext(GlobalContext);
   const postInputRef = useRef();
   const bodyInputRef = useRef();
   const updatePostInputRef = useRef();
@@ -29,11 +32,11 @@ const Post = () => {
     setIsloading(true);
     let myFunction = async () => {
       try {
-        let response = await axios.get(`${baseUrl}/api/v1/post`, {
+        let response = await axios.get(`${API_URL}/api/v1/post`, {
           withCredentials: true,
         });
         setMyData(response.data);
-        // console.log(response.data);
+        console.log(response.data);
         setIsloading(false);
         setTimeout(() => {
           setAlert(null);
@@ -51,7 +54,7 @@ const Post = () => {
     let text = updateBodyInputRef.current.value;
     try {
       let response = await axios.put(
-        `${baseUrl}/api/v1/post/${id}`,
+        `${API_URL}/api/v1/post/${id}`,
         {
           title: title,
           text: text,
@@ -65,12 +68,13 @@ const Post = () => {
       setToggleRefresh(!toggleRefresh);
     } catch (error) {
       console.log(error);
+      dispatch({ type: "USER_LOGOUT" });
     }
   };
 
   const deleteHandler = async (id) => {
     try {
-      let response = await axios.delete(`${baseUrl}/api/v1/post/${id}`, {
+      let response = await axios.delete(`${API_URL}/api/v1/post/${id}`, {
         withCredentials: true,
       });
       setAlert(response.data);
@@ -78,6 +82,7 @@ const Post = () => {
       setToggleRefresh(!toggleRefresh);
     } catch (error) {
       console.log(error);
+      dispatch({ type: "USER_LOGOUT" });
     }
   };
 
@@ -87,7 +92,7 @@ const Post = () => {
 
     try {
       let response = await axios.post(
-        `${baseUrl}/api/v1/post`,
+        `${API_URL}/api/v1/post`,
         {
           title: postInputRef.current.value,
           text: bodyInputRef.current.value,
@@ -103,6 +108,7 @@ const Post = () => {
     } catch (error) {
       console.log(error);
       setIsloading(false);
+      dispatch({ type: "USER_LOGOUT" });
     }
     // console.log("hello world");
   };
@@ -114,7 +120,7 @@ const Post = () => {
 
     try {
       let response = await axios.get(
-        `${baseUrl}/api/v1/post/search?q=${query}`,
+        `${API_URL}/api/v1/post/search?q=${query}`,
         {
           withCredentials: true,
         }
@@ -125,7 +131,7 @@ const Post = () => {
       // setToggleRefresh(!toggleRefresh);
       // console.log(response.data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       setIsloading(false);
     }
 

@@ -6,6 +6,31 @@ const router = express.Router();
 
 const db = client.db("Cruddb");
 const col = db.collection("VectorPost");
+const col2 = db.collection("user");
+
+const getProfileMiddleware = async (req, res, next) => {
+  const userId = req.params.userId || req.body.decoded._id;
+  // console.log(userId);
+  if (!ObjectId.isValid(userId)) {
+    res.status(403).send(`userId id must be a valid id`);
+    return;
+  }
+
+  try {
+    const result = await col2.findOne({ _id: new ObjectId(userId) });
+    console.log("hello world");
+    res.send({
+      message: "Ok",
+      data: result,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("server error");
+  }
+};
+
+router.get("/profile", getProfileMiddleware);
+router.get("/profile/:userId", getProfileMiddleware);
 
 router.post("/post", async (req, res, next) => {
   if (!req.body.title || !req.body.text) {
@@ -21,6 +46,9 @@ router.post("/post", async (req, res, next) => {
     let posts = {
       title: req.body.title,
       text: req.body.text,
+      authorEmail: req.body.decoded.email,
+      authorId: new ObjectId(req.body.decoded._id),
+      createdOn: new Date(),
     };
 
     const p = await col.insertOne(posts);
@@ -34,8 +62,16 @@ router.post("/post", async (req, res, next) => {
 });
 
 router.get("/post", async (req, res, next) => {
-  let cursor = col.find({}).sort({ _id: -1 }).limit(100);
+  let userId = req.query.userId || req.body.decoded._id;
 
+  if (!ObjectId.isValid(userId)) {
+    res.status(403).send(`userId id must be a valid id`);
+    return;
+  }
+  let cursor = col
+    .find({ authorId: new ObjectId(userId) })
+    .sort({ _id: -1 })
+    .limit(100);
   try {
     let result = await cursor.toArray();
     res.send(result);
@@ -99,10 +135,11 @@ router.delete("/post/:postId", async (req, res, next) => {
   // let objectId = new ObjectId(myId);
 
   try {
-    let deletePost = await col.findOneAndDelete({
+    let deletePost = await col.deleteOne({
       _id: new ObjectId(req.params.postId),
     });
-    if (deletePost.value) {
+    console.log(deletePost);
+    if (deletePost.acknowledged) {
       console.log("deleteResponse: ", deletePost);
       res.send("your data has been successfully deleted");
     } else {
