@@ -31,14 +31,9 @@ app.use((req, res, next) => {
     next();
     return;
   }
-  res.status(401).send("your token is unvalid");
 });
 
 app.use("/api/v1", postRouter); //Secure API
-
-app.get("/api/v1/ping", (req, res) => {
-  res.send("OK");
-});
 
 app.use(express.static(path.join(__dirname, "web/build")));
 
