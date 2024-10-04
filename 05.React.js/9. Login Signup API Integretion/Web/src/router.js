@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Layout from "./components/layout/layout";
+import Profile from "./pages/profile/profile";
 import Home from "./pages/home/home";
 import About from "./pages/about/about";
 import Contact from "./pages/contact/contact";
@@ -11,6 +12,7 @@ import { GlobalContext } from "./context/context";
 
 const MyRouter = () => {
   const { state } = useContext(GlobalContext);
+
   return (
     <div>
       <BrowserRouter>
@@ -20,6 +22,8 @@ const MyRouter = () => {
               <Route path="/" element={<Home />} />
               <Route index path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
+              {/* <Route path="/profile" element={<Profile />} /> */}
+              <Route path="/profile/:userId" element={<Profile />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/chat" element={<Chat />} />
               <Route path="*" element={<Navigate to="/" replace={true} />} />

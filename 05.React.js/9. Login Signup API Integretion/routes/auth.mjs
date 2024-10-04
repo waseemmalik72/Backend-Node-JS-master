@@ -1,5 +1,5 @@
 import express from "express";
-import { client } from "../mongodb.mjs";
+import { client } from "../Databases/mongodb.mjs";
 import { stringToHash, verifyHash, validateHash } from "bcrypt-inzi";
 import jwt from "jsonwebtoken";
 const router = express.Router();
@@ -87,7 +87,7 @@ router.post("/login", async (req, res) => {
         },
         process.env.SECRET,
         {
-          expiresIn: 1500,
+          expiresIn: "24h",
         }
       );
       res.cookie("token", token, {
@@ -102,6 +102,7 @@ router.post("/login", async (req, res) => {
           email: req.body.email,
           firstName: result.firstName,
           lastName: result.lastName,
+          _id: result._id,
         },
       });
     } else {

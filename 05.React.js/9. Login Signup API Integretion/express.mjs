@@ -4,7 +4,8 @@ import "dotenv/config";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
-
+import { storage } from "./Databases/firebaseConfig.mjs";
+// console.log(imageRef);
 const __dirname = path.resolve();
 const app = express();
 const port = 5000;

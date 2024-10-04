@@ -7,14 +7,23 @@ export const reducer = (state, action) => {
         action.payload?.email
       ) {
         let role = action.payload.isAdmin ? "admin" : "user";
+        let firstName = action.payload.firstName;
+        let lastName = action.payload.lastName;
+        firstName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
+        lastName = lastName.charAt(0).toUpperCase() + lastName.slice(1);
         let user = {
-          firstName: action.payload.firstName,
-          lastName: action.payload.lastName,
+          firstName: firstName,
+          lastName: lastName,
           email: action.payload.email,
-          userId: action.payload._id,
         };
         console.log(action.payload);
-        return { ...state, isLogin: true, role: role, user: user };
+        return {
+          ...state,
+          isLogin: true,
+          role: role,
+          user: user,
+          userId: action.payload._id,
+        };
       }
       break;
     }
@@ -29,6 +38,14 @@ export const reducer = (state, action) => {
 
     case "CHANGE_NAME": {
       return { ...state, darkTheme: !state.darkTheme };
+    }
+
+    case "CHANGE_VALUE": {
+      if (action.value.length === 0) {
+        return { ...state, textAreaValue: null };
+      } else {
+        return { ...state, textAreaValue: action.value };
+      }
     }
 
     default: {

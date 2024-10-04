@@ -1,12 +1,15 @@
 import express from "express";
+import { storage } from "../Databases/firebaseConfig.mjs";
+import { ref, uploadBytes } from "firebase/storage";
 // import { nanoid } from "nanoid";
-import { client, openAi } from "../mongodb.mjs";
+import { client, openAi } from "../Databases/mongodb.mjs";
 import { ObjectId } from "mongodb";
 const router = express.Router();
 
 const db = client.db("Cruddb");
 const col = db.collection("VectorPost");
 const col2 = db.collection("user");
+const imageRef = ref(storage, "images/space.jpg");
 
 const getProfileMiddleware = async (req, res, next) => {
   const userId = req.params.userId || req.body.decoded._id;
@@ -17,11 +20,16 @@ const getProfileMiddleware = async (req, res, next) => {
   }
 
   try {
-    const result = await col2.findOne({ _id: new ObjectId(userId) });
-    console.log("hello world");
+    const result = await col2.findOne(
+      {
+        _id: new ObjectId(userId),
+      },
+      { projection: { password: 0 } }
+    );
+    // console.log("hello world");
     res.send({
       message: "Ok",
-      data: result,
+      user: result,
     });
   } catch (err) {
     console.log(err);
@@ -63,13 +71,27 @@ router.post("/post", async (req, res, next) => {
 
 router.get("/post", async (req, res, next) => {
   let userId = req.query.userId || req.body.decoded._id;
-
+  // console.log(userId);
   if (!ObjectId.isValid(userId)) {
     res.status(403).send(`userId id must be a valid id`);
     return;
   }
   let cursor = col
     .find({ authorId: new ObjectId(userId) })
+    .sort({ _id: -1 })
+    .limit(100);
+  try {
+    let result = await cursor.toArray();
+    res.send(result);
+  } catch (e) {
+    console.log("error getting data mongodb: ", e);
+    res.status(500).send("server error, please try later");
+  }
+});
+
+router.get("/feed", async (req, res, next) => {
+  let cursor = col
+    .find({}, { projection: { embedding: 0 } })
     .sort({ _id: -1 })
     .limit(100);
   try {

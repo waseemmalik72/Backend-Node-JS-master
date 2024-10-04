@@ -1,30 +1,120 @@
+/* navbar styling here */
+
 .navbar {
-    height: 120px;
-    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px 0 15px;
+    min-height: 60px;
+    background-color: #ffffff;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    margin-bottom: 2px;
+    border-bottom: 1px solid #d5d8df;
+}
+
+.navbar .logo-with-form {
     display: flex;
     align-items: center;
 }
 
-.navbar .nav-list {
+.navbar .app-logo .logo {
+    color: #4e5d78;
+    font-size: 1.2rem;
+
+}
+
+.navbar .navbar-form {
     display: flex;
-    gap: 15px;
-    list-style: none;
-}
-
-.navbar .nav-list .nav-link {
-    text-decoration: none;
-    color: white;
-}
-
-.spinner-div {
+    align-items: center;
     position: relative;
     top: 0;
+    left: 0;
+    margin-left: 11rem;
+    width: 22rem;
+    height: 38px;
+    border: 3px solid #d3d7dd;
+    border-radius: 8px;
+
 }
 
-.spinner-div .loading {
-    position: absolute;
-    top: 66%;
-    left: 44%;
-    right: 50%;
-    font-size: 3rem;
+.navbar-form .search-icon {
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-icon .search {
+    font-size: 18px;
+    color: #d3d7dd;
+}
+
+.navbar-form .type-header-form {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+.type-header-form input {
+    border: none;
+    font-size: 14px;
+    width: 100%;
+    height: 100%;
+    outline: none;
+    padding-right: 5px;
+    border-radius: 0 5px 5px 0;
+    padding-left: 4px;
+}
+
+
+
+.navbar .user-profile {
+    display: flex;
+    column-gap: 1rem;
+    align-items: center;
+}
+
+.user-profile .user-name {
+    color: #4e5d78;
+    font-size: 1.2rem;
+}
+
+.navbar .user-profile-pic {
+    height: 48px;
+    border-radius: 50px;
+    margin-top: 5px;
+}
+
+/* Sidebar styling here */
+
+.body-section {
+    display: flex;
+    background-color: #f9f9f9;
+}
+
+.sidebar {
+    padding-left: 15px;
+    /* width: calc(100% - 28%); */
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: #ffffff;
+    min-width: 250px;
+    position: fixed;
+    left: 0;
+    height: 100%;
+}
+
+.nav-item .nav-list {
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.body-section .main {
+    padding: 2rem;
+    position: relative;
+    left: 250px;
 }

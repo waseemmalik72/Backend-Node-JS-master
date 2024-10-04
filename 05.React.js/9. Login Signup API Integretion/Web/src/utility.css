@@ -1,0 +1,39 @@
+/* Utility styling here */
+svg {
+    font-size: 24px;
+    color: #888888;
+}
+
+.nav-item .nav-list {
+    cursor: pointer;
+}
+
+.nav-item .nav-list .nav-link {
+    color: #888888;
+}
+
+.rm-style {
+    list-style: none;
+    text-decoration: none;
+}
+
+.user-profile-pic {
+    height: 48px;
+    border-radius: 50%;
+}
+
+.fontWeight500 {
+    font-weight: 500;
+}
+
+.fontWeight900 {
+    font-weight: 900;
+}
+
+.none {
+    display: none;
+}
+
+.cursor {
+    cursor: pointer;
+}

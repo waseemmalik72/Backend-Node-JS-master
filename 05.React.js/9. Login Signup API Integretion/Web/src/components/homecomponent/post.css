@@ -1,46 +1,332 @@
+/* main content form styling here  */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    scroll-behavior: smooth;
 }
 
-.form-header {
+.main .main-content .post-form {
+    width: 590px;
+    padding: 20px;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    border-radius: 5px;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+
+}
+
+.main-content .post-form .div1 {
+    display: flex;
+    column-gap: 12px;
+    align-items: center;
+    width: 100%;
+}
+
+.main-content .post-form .user-pic {
+    display: flex;
+    flex: 1;
+}
+
+.main-content .post-form form {
+    width: 86%;
+}
+
+.main-content .post-form .click-to-post {
+    width: 100%;
+    height: 38px;
+    color: #b5bcc7;
+    border-radius: 8px;
+    border: none;
+    background-color: #f6f7f8;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.main-content .post-form .click-to-post:hover {
+    background-color: #F0F2F5;
+}
+
+.main-content .post-form .div2 {
     display: flex;
     justify-content: space-between;
 }
 
-.search-form {
-    margin: 4rem 2rem 0 0;
+.post-form .div2 .mini-flex {
+    display: flex;
+    align-items: center;
+    column-gap: 4px;
+    cursor: pointer;
 }
 
-.weather-card {
+
+.post-form .div2 .mini-flex svg {
+    font-size: 24px;
+    color: #888888;
+}
+
+.post-form .div2 .mini-flex .para {
+    color: #888888;
+    font-size: 14px;
+}
+
+.post-form .btn .post-btn {
+    width: 80px;
+    height: 35px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: 5px;
+    background-color: #ff60a3;
+    color: #ffdbea;
+    cursor: pointer;
+
+}
+
+
+.main-content .alert-msg {
+    height: 50px;
+    color: green;
+    width: 500px;
+}
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 100%;
-    width: 20%;
-    margin-top: 20px;
-    padding: 20px;
-    margin-left: 20px;
-    border-radius: 18px;
-    line-height: 38px;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+
+.submitPostModal .post {
+    width: 500px;
+    background-color: #FFFFFF;
     box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    border-radius: 5px;
+    margin-top: 50px;
+}
+
+.post .postHeader {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px 0;
+    border-bottom: 2px solid #E7E8EA;
+}
+
+.postHeader .div1 {
+    width: 60%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.postHeader .cancelBtn .btn {
+    width: 38px;
+    font-size: 1.4rem;
+    border-radius: 50%;
+    border: none;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    background-color: #d8dadf8a;
+    justify-content: center;
+    color: #61676F;
+    cursor: pointer;
+    margin-right: 10px;
+
+}
+
+.postHeader .cancelBtn .btn:hover {
+    background-color: #D8DADF;
+}
+
+.submitPostModal .userProfile {
+    display: flex;
+    gap: 10px;
+    margin: 10px 15px;
+}
+
+.post .mainPostSection {
+    overflow-y: auto;
+    padding: 0 15px;
+    max-height: 340px;
+
+}
+
+.mainPostSection::-webkit-scrollbar {
+    width: 8px;
+    display: none;
+}
+
+.mainPostSection::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+    border-radius: 20px;
+}
+
+.mainPostSection::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 20px;
+}
+
+.mainPostSection::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.mainPostSection:hover::-webkit-scrollbar {
+    display: block;
+}
+
+.mainPostSection .postText {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.postText .postTitle {
+    width: 100%;
+    height: auto;
+    min-height: 74px;
+    max-height: 100%;
+    border: none;
+    overflow: hidden;
+    resize: none;
+    outline: none;
+    padding-right: 5px;
+    margin-bottom: 33px;
+}
+
+
+
+
+.mainPostSection .displayShow {
+    border: 1px solid #E5E6E8;
+    border-radius: 10px;
+    padding: 5px 10px;
+    max-height: 100%;
+}
+
+.displayShow .imageDisplay {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: 0;
+}
+
+.displayShow .imageDisplay .cover {
+    width: 100%;
+    object-fit: cover;
+}
+
+.post .mainPostSection .showUploadMediaBox {
+    width: 100%;
+    height: 190px;
+    background-color: #F7F8FA;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    position: relative;
+    top: 0;
+}
+
+.mainPostSection .uploadCancelBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px 10px 0 0;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: none;
+    font-size: 1.2rem;
+    color: #888888;
+    cursor: pointer;
+    background-color: #ffffff;
+}
+
+.mainPostSection .uploadCancelBtn:hover {
+    background-color: #d8dadfba;
+}
+
+
+.mainPostSection .showUploadMediaBox .selectImage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 10px;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+}
+
+.mainPostSection .showUploadMediaBox .selectImage:hover {
+    background-color: #EAEBED;
+}
+
+.submitPostModal .post .addMore {
+    display: flex;
+    flex-direction: column;
+    padding: 5px 15px;
+    row-gap: 30px;
+    /* background-color: lightblue; */
+}
+
+.post .mediaBox {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border: 2px solid #E5E6E8;
+    border-radius: 10px;
+}
+
+.post .addMedia {
+    display: flex;
+    gap: 10px;
+}
+
+.post .submitPostBtn .submitPost {
+    width: 100%;
+    border-radius: 7px;
+    padding: 5px;
+    border: none;
+    background-color: #ff60a3;
+    color: #ffdbea;
+    font-size: 1.2rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.post .submitPostBtn .submitPost:hover {
+    background-color: #ff60a3ed;
+}
+
+
+.main-content .all-post {
+    width: 590px;
 }
 
 .my-data {
-    width: 50%;
-    padding: 10px;
-    margin: 20px;
+    width: 100%;
+    padding: 20px;
     height: 100%;
     box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    margin-bottom: 20px;
+    background-color: #ffffff;
 }
 
 .data-title {
     padding-bottom: 20px;
 }
 
-.alert-msg {
-    height: 50px;
-    margin: 5px;
-    color: green;
-}
 
 .delete-btn,
 .edit-btn,
@@ -67,12 +353,4 @@
 
 .bg-body-tertiary {
     background-color: #343a40 !important;
-}
-
-.navbar-brand {
-    color: #f8fcff !important;
-}
-
-.nav-link {
-    color: #fdfdfd !important;
 }
